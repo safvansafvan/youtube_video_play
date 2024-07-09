@@ -6,10 +6,10 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class YouTubePlayerScreen extends StatefulWidget {
   final Video video;
 
-  YouTubePlayerScreen({required this.video});
+  const YouTubePlayerScreen({super.key, required this.video});
 
   @override
-  _YouTubePlayerScreenState createState() => _YouTubePlayerScreenState();
+  State<YouTubePlayerScreen> createState() => _YouTubePlayerScreenState();
 }
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
@@ -22,30 +22,29 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.id,
-      flags: YoutubePlayerFlags(
+      flags: const YoutubePlayerFlags(
         autoPlay: true,
       ),
     );
-    fetchVideoSuggestions();
+    fetchVideos();
   }
 
-  Future<void> fetchVideoSuggestions() async {
+  Future<void> fetchVideos() async {
     setState(() {
       _isLoading = true;
     });
 
     YouTubeService youTubeService = YouTubeService();
-    List<Video> suggestions =
-        await youTubeService.fetchSuggestions(widget.video.id);
+    List<Video> videos = await youTubeService.fetchVideos('Kotlin tutorials');
     setState(() {
-      _suggestedVideos = suggestions;
+      _suggestedVideos = videos;
       _isLoading = false;
     });
   }
 
   void playSuggestedVideo(Video video) {
     _controller.load(video.id);
-    fetchVideoSuggestions();
+    fetchVideos();
   }
 
   @override
@@ -61,7 +60,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
             showVideoProgressIndicator: true,
           ),
           _isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : Expanded(
                   child: ListView.builder(
                     itemCount: _suggestedVideos.length,

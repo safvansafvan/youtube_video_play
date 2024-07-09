@@ -8,7 +8,7 @@ class YouTubeService {
 
   Future<List<Video>> fetchVideos(String query) async {
     final url =
-        'https://www.googleapis.com/youtube/v3/search?part=snippet&q=$query&type=video&key=$apiKey';
+        'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=$query&type=video&key=$apiKey';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -21,20 +21,26 @@ class YouTubeService {
     }
   }
 
-  Future<List<Video>> fetchSuggestions(String videoId) async {
+  Future<List<Video>> fetchSuggestedVideos(String videoId) async {
     final url =
-        'https://www.googleapis.com/youtube/v3/search?relatedToVideoId=$videoId&type=video&part=snippet&key=$apiKey';
+        'https://www.googleapis.com/youtube/v3/videos?part=snippet&relatedToVideoId=$videoId&type=video&key=$apiKey';
+
+    print('Requesting URL: $url'); // Log the URL for debugging
+
     final response = await http.get(Uri.parse(url));
+
+    print('Response status code: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final List<Video> videos =
+      final List<Video> suggestedVideos =
           (data['items'] as List).map((item) => Video.fromJson(item)).toList();
-      return videos;
+      return suggestedVideos;
     } else {
-      print('Failed to load video suggestions: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      throw Exception('Failed to load video suggestions');
+      final error = json.decode(response.body);
+      throw Exception(
+          'Failed to load suggested videos: ${error['error']['message']}');
     }
   }
 }
