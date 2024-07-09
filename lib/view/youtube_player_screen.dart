@@ -52,6 +52,8 @@ class _VideoScreenState extends State<VideoScreen> {
                   player: YoutubePlayer(
                       controller: videoController.controller,
                       onEnded: (metaData) {
+                        SystemChrome.setPreferredOrientations(
+                            [DeviceOrientation.portraitUp]);
                         videoController.showSuggestionState(true);
                         videoController.updateSuggestionIndexState();
                         videoController.controller.pause();
@@ -274,11 +276,16 @@ class _VideoScreenState extends State<VideoScreen> {
                   Expanded(
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromARGB(255, 44, 44, 44)),
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)))),
+                        backgroundColor: const MaterialStatePropertyAll(
+                            Color.fromARGB(255, 44, 44, 44)),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              20,
+                            ),
+                          ),
+                        ),
+                      ),
                       onPressed: () {
                         videoController.controller.pause();
                         videoController.showSuggestionState(false);
@@ -293,11 +300,14 @@ class _VideoScreenState extends State<VideoScreen> {
                   Expanded(
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              const MaterialStatePropertyAll(Colors.white),
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)))),
+                        backgroundColor:
+                            const MaterialStatePropertyAll(Colors.white),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
                       onPressed: () {
                         videoController.controller.load(video.id);
                         videoController.showSuggestionState(false);

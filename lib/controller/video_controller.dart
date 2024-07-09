@@ -13,7 +13,7 @@ class VideoController extends GetxController {
   bool isLoading = false;
   bool suggetionLoading = false;
   int index = 0;
-  int suggestionIndex = 1;
+  int suggestionIndex = 0;
   bool showSuggestion = false;
 
   Future<void> fetchVideos() async {

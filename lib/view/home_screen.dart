@@ -80,12 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       height: 200,
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.black12),
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  video.thumbnailUrl))),
+                                        border:
+                                            Border.all(color: Colors.black12),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image:
+                                              NetworkImage(video.thumbnailUrl),
+                                        ),
+                                      ),
                                       child: Center(
                                         child: Image.asset(
                                           'assets/play.png',
