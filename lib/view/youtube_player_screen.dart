@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_youtube_video/controller/video_controller.dart';
 import 'package:flutter_youtube_video/model/video_model.dart';
 import 'package:get/get.dart';
@@ -102,56 +103,67 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                       child: CircularProgressIndicator(),
                     ))
                   : Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(top: 20),
-                        itemCount: videoController.videosList.length,
-                        itemBuilder: (context, index) {
-                          final suggetion =
-                              videoController.suggestedVideos[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                playSuggestedVideo(suggetion);
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 200,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.black12),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                suggetion.thumbnailUrl))),
-                                    child: Center(
-                                      child: Image.asset(
-                                        'assets/play.png',
-                                        height: 50,
-                                      ),
+                      child: AnimationLimiter(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(top: 20),
+                          itemCount: videoController.videosList.length,
+                          itemBuilder: (context, index) {
+                            final suggetion =
+                                videoController.suggestedVideos[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  playSuggestedVideo(suggetion);
+                                },
+                                child: AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: SlideAnimation(
+                                    verticalOffset: 50.0,
+                                    curve: Curves.linearToEaseOut,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 200,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black12),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                      suggetion.thumbnailUrl))),
+                                          child: Center(
+                                            child: Image.asset(
+                                              'assets/play.png',
+                                              height: 50,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                                  horizontal: 16)
+                                              .copyWith(top: 8, bottom: 16),
+                                          child: Text(
+                                            suggetion.title,
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                                color: Color(0xff0A0A0A)),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                            horizontal: 16)
-                                        .copyWith(top: 8, bottom: 16),
-                                    child: Text(
-                                      suggetion.title,
-                                      maxLines: 2,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: Color(0xff0A0A0A)),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     );
             }),
