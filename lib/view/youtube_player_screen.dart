@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_youtube_video/controller/video_controller.dart';
 import 'package:flutter_youtube_video/model/video_model.dart';
-import 'package:flutter_youtube_video/service/youtube_service.dart';
+import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubePlayerScreen extends StatefulWidget {
@@ -14,11 +15,10 @@ class YouTubePlayerScreen extends StatefulWidget {
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
   late YoutubePlayerController _controller;
-  List<Video> _suggestedVideos = [];
-  bool _isLoading = false;
 
   @override
   void initState() {
+    final videoController = Get.find<VideoController>();
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: widget.video.id,
@@ -26,56 +26,64 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
         autoPlay: true,
       ),
     );
-    fetchVideos();
-  }
-
-  Future<void> fetchVideos() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    YouTubeService youTubeService = YouTubeService();
-    List<Video> videos = await youTubeService.fetchVideos('Kotlin tutorials');
-    setState(() {
-      _suggestedVideos = videos;
-      _isLoading = false;
-    });
+    videoController.fetchSuggetion(suggetion: 'Programing Concepts');
   }
 
   void playSuggestedVideo(Video video) {
+    final videoController = Get.find<VideoController>();
     _controller.load(video.id);
-    fetchVideos();
+    videoController.fetchSuggetion(suggetion: 'Advanced Programing Concepts');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Playing ${widget.video.title}'),
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           YoutubePlayer(
             controller: _controller,
             showVideoProgressIndicator: true,
           ),
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: _suggestedVideos.length,
-                    itemBuilder: (context, index) {
-                      final video = _suggestedVideos[index];
-                      return ListTile(
-                        leading: Image.network(video.thumbnailUrl),
-                        title: Text(video.title),
-                        onTap: () {
-                          playSuggestedVideo(video);
-                        },
-                      );
-                    },
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 5, bottom: 5),
+            child: Text(
+              widget.video.title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Colors.black54),
+            ),
+          ),
+          GetBuilder<VideoController>(builder: (videoController) {
+            return videoController.suggetionLoading == true
+                ? const Center(
+                    child: Padding(
+                    padding: EdgeInsets.only(top: 100),
+                    child: CircularProgressIndicator(),
+                  ))
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: videoController.suggestedVideos.length,
+                      itemBuilder: (context, index) {
+                        final suggetion =
+                            videoController.suggestedVideos[index];
+                        return ListTile(
+                          leading: Image.network(suggetion.thumbnailUrl),
+                          title: Text(suggetion.title),
+                          onTap: () {
+                            playSuggestedVideo(suggetion);
+                          },
+                        );
+                      },
+                    ),
+                  );
+          }),
         ],
       ),
     );
