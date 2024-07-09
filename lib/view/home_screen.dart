@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void playVideo(Video video) {
-    Get.to(YouTubePlayerScreen(video: video),
+    Get.to(VideoScreen(video: video),
         curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 400),
         transition: Transition.rightToLeft);

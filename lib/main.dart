@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Youtube',
       theme: ThemeData(
         fontFamily: GoogleFonts.roboto().fontFamily,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const SplashScreen(),
