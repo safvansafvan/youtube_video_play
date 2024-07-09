@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_youtube_video/controller/video_controller.dart';
 import 'package:flutter_youtube_video/model/video_model.dart';
@@ -106,7 +104,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                       child: AnimationLimiter(
                         child: ListView.builder(
                           padding: const EdgeInsets.only(top: 20),
-                          itemCount: videoController.videosList.length,
+                          itemCount: videoController.suggestedVideos.length,
                           itemBuilder: (context, index) {
                             final suggetion =
                                 videoController.suggestedVideos[index];
