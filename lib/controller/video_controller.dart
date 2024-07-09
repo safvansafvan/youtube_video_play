@@ -14,7 +14,8 @@ class VideoController extends GetxController {
   Future<void> fetchVideos() async {
     isLoading = true;
     update();
-    List<Video> videos = await YouTubeService.fetchVideos('Kotlin tutorials');
+    List<Video> videos =
+        await YouTubeService.fetchVideos('Kotlin and android tutorials');
     videosList = videos;
     isLoading = false;
     update();
@@ -23,7 +24,7 @@ class VideoController extends GetxController {
   Future<void> fetchSuggetion({String? suggetion}) async {
     suggetionLoading = true;
     List<Video> videos =
-        await YouTubeService.fetchVideos(suggetion ?? 'Kotlin tutorials');
+        await YouTubeService.fetchVideos(suggetion ?? 'Programing');
     suggestedVideos.clear();
     suggestedVideos = videos;
     suggestedVideos.removeAt(index);

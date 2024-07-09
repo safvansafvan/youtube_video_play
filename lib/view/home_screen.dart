@@ -70,12 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Container(
                                 height: 200,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 20),
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image:
@@ -89,14 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 22),
+                                    const EdgeInsets.symmetric(horizontal: 16)
+                                        .copyWith(top: 8, bottom: 16),
                                 child: Text(
                                   video.title,
                                   maxLines: 2,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: Colors.black54),
+                                      fontSize: 14,
+                                      color: Color(0xff0A0A0A)),
                                 ),
                               )
                             ],
@@ -112,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void playVideo(Video video) {
-    Get.offAll(YouTubePlayerScreen(video: video),
+    Get.to(YouTubePlayerScreen(video: video),
         curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 400),
         transition: Transition.rightToLeft);
