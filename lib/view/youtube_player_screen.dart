@@ -69,16 +69,53 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                   ))
                 : Expanded(
                     child: ListView.builder(
-                      itemCount: videoController.suggestedVideos.length,
+                      padding: const EdgeInsets.only(top: 20),
+                      itemCount: videoController.videosList.length,
                       itemBuilder: (context, index) {
-                        final suggetion =
-                            videoController.suggestedVideos[index];
-                        return ListTile(
-                          leading: Image.network(suggetion.thumbnailUrl),
-                          title: Text(suggetion.title),
-                          onTap: () {
-                            playSuggestedVideo(suggetion);
-                          },
+                        final suggetion = videoController.videosList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: GestureDetector(
+                            onTap: () {
+                              playSuggestedVideo(suggetion);
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 200,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black12),
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              suggetion.thumbnailUrl))),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/play.png',
+                                      height: 50,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 22),
+                                  child: Text(
+                                    suggetion.title,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                        color: Colors.black54),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),

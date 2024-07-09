@@ -9,7 +9,7 @@ class Video {
     return Video(
       id: json['id']['videoId'],
       title: json['snippet']['title'],
-      thumbnailUrl: json['snippet']['thumbnails']['default']['url'],
+      thumbnailUrl: json['snippet']['thumbnails']['high']['url'],
     );
   }
 }

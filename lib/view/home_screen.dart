@@ -22,37 +22,99 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('YouTube Videos'),
+        surfaceTintColor: Colors.transparent,
+        centerTitle: false,
+        title: Image.asset(
+          'assets/youtube.png',
+          height: 20,
+        ),
+        actions: [
+          Image.asset(
+            'assets/stream.png',
+            height: 25,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Image.asset(
+              'assets/bell.png',
+              height: 25,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Image.asset(
+              'assets/search.png',
+              height: 25,
+            ),
+          )
+        ],
       ),
-      body: GetBuilder<VideoController>(builder: (videoController) {
-        return videoController.isLoading == true
-            ? const Center(child: CircularProgressIndicator())
-            : Center(
-                child: ListView.builder(
-                  itemCount: videoController.videosList.length,
-                  itemBuilder: (context, index) {
-                    final video = videoController.videosList[index];
-                    return ListTile(
-                      leading: Image.network(video.thumbnailUrl),
-                      title: Text(video.title),
-                      onTap: () {
-                        videoController.updateIndexState(index);
-                        playVideo(video, context);
-                      },
-                    );
-                  },
-                ),
-              );
-      }),
+      body: GetBuilder<VideoController>(
+        builder: (videoController) {
+          return videoController.isLoading == true
+              ? const Center(child: CircularProgressIndicator())
+              : Center(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 20),
+                    itemCount: videoController.videosList.length,
+                    itemBuilder: (context, index) {
+                      final video = videoController.videosList[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            playVideo(video);
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 200,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image:
+                                            NetworkImage(video.thumbnailUrl))),
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/play.png',
+                                    height: 50,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 22),
+                                child: Text(
+                                  video.title,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.black54),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+        },
+      ),
     );
   }
 
-  void playVideo(Video video, BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => YouTubePlayerScreen(video: video),
-      ),
-    );
+  void playVideo(Video video) {
+    Get.offAll(YouTubePlayerScreen(video: video),
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 400),
+        transition: Transition.rightToLeft);
   }
 }
