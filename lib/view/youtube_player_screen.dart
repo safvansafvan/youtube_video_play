@@ -199,6 +199,7 @@ class _VideoScreenState extends State<VideoScreen> {
 
   void playSuggestedVideo(Video video) {
     final videoController = Get.find<VideoController>();
+    videoController.showSuggestionState(false);
     videoController.updateIndexState(videoController.index++);
     videoController.controller.load(video.id);
     videoController.fetchSuggetion(suggetion: handleSugeetions());

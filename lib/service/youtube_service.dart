@@ -5,9 +5,8 @@ import 'package:http/http.dart' as http;
 import '../model/video_model.dart';
 
 class YouTubeService {
-  //static String apiKey = 'AIzaSyB66WPR1LOqJCvFrpRLv514WciAC0sxG2w';
-  //static String apiKey = 'AIzaSyBSlNBYkvE4bkrsY50GSpoNWTlhNAfrOmI';
-  static String apiKey = 'AIzaSyCJZN05G9fV-C3aoVJZ7DPcF7OoyYLSCT4';
+  //static String apiKey = 'AIzaSyCJZN05G9fV-C3aoVJZ7DPcF7OoyYLSCT4';
+  static String apiKey = 'AIzaSyB-wZ9Wlgzxe8ZUEyOPb28kn5TJobduqhw';
 
   static Future<List<Video>> fetchVideos(String query) async {
     final url =
